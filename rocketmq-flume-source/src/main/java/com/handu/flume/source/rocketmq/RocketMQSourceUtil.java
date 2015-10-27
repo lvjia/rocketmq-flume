@@ -16,7 +16,6 @@
 package com.handu.flume.source.rocketmq;
 
 import com.alibaba.rocketmq.client.consumer.DefaultMQPullConsumer;
-import com.alibaba.rocketmq.client.consumer.MQPullConsumer;
 import com.alibaba.rocketmq.common.protocol.heartbeat.MessageModel;
 import com.google.common.base.Preconditions;
 import org.apache.flume.Context;
@@ -68,7 +67,7 @@ public class RocketMQSourceUtil {
     public static final String MESSAGEMODEL_CONFIG = "messageModel";
     public static final String MESSAGEMODEL_DEFAULT = "BROADCASTING";
 
-    public static MQPullConsumer getConsumer(Context context) {
+    public static DefaultMQPullConsumer getConsumer(Context context) {
         final String consumerGroup = context.getString(CONSUMER_GROUP_CONFIG, CONSUMER_GROUP_DEFAULT);
         final String namesrvAddr = Preconditions.checkNotNull(context.getString(NAMESRV_ADDR_CONFIG), "RocketMQ namesrvAddr must be specified. For example: a1.sources.r1.namesrvAddr=127.0.0.1:9876");
 

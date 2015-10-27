@@ -15,7 +15,7 @@
  */
 package com.handu.flume.source.rocketmq;
 
-import com.alibaba.rocketmq.client.consumer.MQPullConsumer;
+import com.alibaba.rocketmq.client.consumer.DefaultMQPullConsumer;
 import com.alibaba.rocketmq.client.consumer.PullResult;
 import com.alibaba.rocketmq.client.consumer.PullStatus;
 import com.alibaba.rocketmq.client.exception.MQClientException;
@@ -55,7 +55,7 @@ public class RocketMQSource extends AbstractSource implements Configurable, Poll
     private String topicHeaderName;
     private String tagsHeaderName;
     private int maxNums;
-    private MQPullConsumer consumer;
+    private DefaultMQPullConsumer consumer;
 
     @Override
     public void configure(Context context) {
@@ -135,8 +135,9 @@ public class RocketMQSource extends AbstractSource implements Configurable, Poll
     }
 
     private void putMessageQueueOffset(MessageQueue mq, long offset) throws MQClientException {
-        // 存储Offset，客户端每隔5s会定时刷新到Broker或者写入本地缓存文件
+    	// 存储Offset,Offset直接写入本地缓存文件
         consumer.updateConsumeOffset(mq, offset);
+        consumer.defaultMQPullConsumerImpl.persistConsumerOffset();
     }
 
     private long getMessageQueueOffset(MessageQueue mq) throws MQClientException {
